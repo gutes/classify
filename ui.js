@@ -1,5 +1,7 @@
 let categoryNames = {}; // Store category names
 let categoriesQuadrants = [];
+let imagesInCanvas = {}; // Track which images are in the canvas
+
 const stage = new createjs.Stage("demoCanvas");
 const imageSets = {
     superheroes: [
@@ -47,7 +49,25 @@ const imageSets = {
         'https://via.placeholder.com/100?text=Vehicle9'
     ]
 };
-let imagesInCanvas = {}; // Track which images are in the canvas
+
+// Enable drag and drop functionality with HTML5 Drag and Drop API and CreateJS
+const canvas = document.getElementById('demoCanvas');
+canvas.addEventListener('dragover', function (event) {
+    event.preventDefault();
+}, false);
+
+canvas.addEventListener('drop', function (event) {
+    event.preventDefault();
+    const imgSrc = event.dataTransfer.getData('src');
+    const existingImage = stage.children.find(child => child instanceof createjs.Bitmap && child.image.src === imgSrc);
+    if (!existingImage) {
+        addImageToCanvas(imgSrc, event.clientX, event.clientY);
+    }
+}, false);
+
+// Initialize with default settings
+updateQuadrants();
+loadImageSet();
 
 function drawQuadrants(numberOfQuadrants) {
     stage.clear();
@@ -63,17 +83,17 @@ function drawQuadrants(numberOfQuadrants) {
         drawRectangle(0, 0, width / 2, height);
         drawRectangle(width / 2, 0, width / 2, height);
         positions = [
-            { x: width / 4, y: height / 2 },
-            { x: 3 * width / 4, y: height / 2 }
+            { x: width / 4, y: height / 2 , quadrantX: 0, quadrantY: 0, width: width / 2, height: height },
+            { x: 3 * width / 4, y: height / 2, quadrantX: width / 2, quadrantY: 0, width: width / 2, height: height }
         ];
     } else if (numberOfQuadrants === 3) {
         drawRectangle(0, 0, width / 2, height / 2);
         drawRectangle(width / 2, 0, width / 2, height / 2);
         drawRectangle(0, height / 2, width, height / 2);
         positions = [
-            { x: width / 4, y: height / 4 },
-            { x: 3 * width / 4, y: height / 4 },
-            { x: width / 2, y: 3 * height / 4 }
+            { x: width / 4, y: height / 4 , quadrantX: 0, quadrantY: 0, width: width / 2, height: height / 2 },
+            { x: 3 * width / 4, y: height / 4, quadrantX: width / 2, quadrantY: 0, width: width / 2, height: height / 2 },
+            { x: width / 2, y: 3 * height / 4, quadrantX: 0, quadrantY: height / 2, width: width, height: height / 2  }
         ];
     } else if (numberOfQuadrants === 4) {
         drawRectangle(0, 0, width / 2, height / 2);
@@ -81,10 +101,10 @@ function drawQuadrants(numberOfQuadrants) {
         drawRectangle(0, height / 2, width / 2, height / 2);
         drawRectangle(width / 2, height / 2, width / 2, height / 2);
         positions = [
-            { x: width / 4, y: height / 4 },
-            { x: 3 * width / 4, y: height / 4 },
-            { x: width / 4, y: 3 * height / 4 },
-            { x: 3 * width / 4, y: 3 * height / 4 }
+            { x: width / 4, y: height / 4, quadrantX: 0, quadrantY: 0, width: width / 2, height: height / 2 },
+            { x: 3 * width / 4, y: height / 4, quadrantX: width / 2, quadrantY: 0, width: width / 2, height: height / 2 },
+            { x: width / 4, y: 3 * height / 4, quadrantX: 0, quadrantY: height / 2, width: width / 2, height: height / 2 },
+            { x: 3 * width / 4, y: 3 * height / 4, quadrantX: width / 2, quadrantY: height / 2, width: width / 2, height: height / 2 }
         ];
     } else if (numberOfQuadrants === 5) {
         drawRectangle(0, 0, width / 3, height / 2);
@@ -93,11 +113,11 @@ function drawQuadrants(numberOfQuadrants) {
         drawRectangle(0, height / 2, width / 3, height / 2);
         drawRectangle(width / 3, height / 2, 2 * width / 3, height / 2);
         positions = [
-            { x: width / 6, y: height / 4 },
-            { x: width / 2, y: height / 4 },
-            { x: 5 * width / 6, y: height / 4 },
-            { x: width / 6, y: 3 * height / 4 },
-            { x: width / 2, y: 3 * height / 4 }
+            { x: width / 6, y: height / 4, quadrantX: 0, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: width / 2, y: height / 4, quadrantX: width / 3, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: 5 * width / 6, y: height / 4, quadrantX: 2 * width / 3, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: width / 6, y: 3 * height / 4, quadrantX: 0, quadrantY: height / 2, width: width / 3, height: height / 2 },
+            { x: width / 2, y: 3 * height / 4, quadrantX: width / 3, quadrantY: height / 2, width: 2 * width / 3, height: height / 2 }
         ];
     } else if (numberOfQuadrants === 6) {
         drawRectangle(0, 0, width / 3, height / 2);
@@ -107,20 +127,34 @@ function drawQuadrants(numberOfQuadrants) {
         drawRectangle(width / 3, height / 2, width / 3, height / 2);
         drawRectangle(2 * width / 3, height / 2, width / 3, height / 2);
         positions = [
-            { x: width / 6, y: height / 4 },
-            { x: width / 2, y: height / 4 },
-            { x: 5 * width / 6, y: height / 4 },
-            { x: width / 6, y: 3 * height / 4 },
-            { x: width / 2, y: 3 * height / 4 },
-            { x: 5 * width / 6, y: 3 * height / 4 }
+            { x: width / 6, y: height / 4, quadrantX: 0, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: width / 2, y: height / 4, quadrantX: width / 3, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: 5 * width / 6, y: height / 4, quadrantX: 2 * width / 3, quadrantY: 0, width: width / 3, height: height / 2 },
+            { x: width / 6, y: 3 * height / 4, quadrantX: 0, quadrantY: height / 2, width: width / 3, height: height / 2 },
+            { x: width / 2, y: 3 * height / 4, quadrantX: width / 3, quadrantY: height / 2, width: width / 3, height: height / 2 },
+            { x: 5 * width / 6, y: 3 * height / 4, quadrantX: 2* width / 3, quadrantY: height / 2, width: width / 3, height: height / 2 }
         ];
     }
     let index = 0;
-    positions.forEach(pos => {
+    /*positions.forEach(pos => {
         categoriesQuadrants.push({pos: pos, id : `categoria${index}` });
         index++;
-    });
+    });*/
     
+    positions.forEach(pos => {
+        categoriesQuadrants.push({
+            pos: {h: parseFloat(pos.x), y: parseFloat(pos.y)}, 
+            id : `categoria${index}`,
+            quadrant: {
+                x: parseFloat(pos.quadrantX),
+                y: parseFloat(pos.quadrantY),
+                height: parseFloat(pos.height),
+                width: parseFloat(pos.width)
+            }
+        });
+        index++;
+    });
+
     addCategoryNames(positions, numberOfQuadrants);
     stage.update();
 }
@@ -174,21 +208,6 @@ function loadImageSet() {
     drawQuadrants(parseInt(document.getElementById('quadrants').value, 10));
 }
 
-// Enable drag and drop functionality with HTML5 Drag and Drop API and CreateJS
-const canvas = document.getElementById('demoCanvas');
-canvas.addEventListener('dragover', function (event) {
-    event.preventDefault();
-}, false);
-
-canvas.addEventListener('drop', function (event) {
-    event.preventDefault();
-    const imgSrc = event.dataTransfer.getData('src');
-    const existingImage = stage.children.find(child => child instanceof createjs.Bitmap && child.image.src === imgSrc);
-    if (!existingImage) {
-        addImageToCanvas(imgSrc, event.clientX, event.clientY);
-    }
-}, false);
-
 function addImageToCanvas(imgSrc, x, y) {
     const offsetX = canvas.getBoundingClientRect().left;
     const offsetY = canvas.getBoundingClientRect().top;
@@ -233,6 +252,16 @@ function saveResults() {
         y: child.y
     }));
 
+    console.log(imagePositions);
+
+    imagePositions.forEach(img => {
+        let category = "";
+        img.category = determineCategoryFromQuadrants(img.x, img.y);
+        //console.log (`Image ${img.imageId} is at ${determineCategoryFromQuadrants(img.x, img.y)}`) 
+    });
+
+    console.log(imagePositions);
+    
     const data = {
         reasoning,
         categoryNames: Object.values(categoryNames),
@@ -253,6 +282,20 @@ function saveResults() {
             console.error('Error saving results:', error);
             alert('Failed to save results.');
         });
+}
+
+function determineCategoryFromQuadrants(x, y){
+    let category = null;
+    let index = 0;
+
+    categoriesQuadrants.forEach(catQ => {
+        if ((x > catQ.quadrant.x) && (x < catQ.quadrant.x + catQ.quadrant.width) &&
+            (y > catQ.quadrant.y) && (y < catQ.quadrant.y + catQ.quadrant.height)){
+                category = catQ.name
+            }
+        index++;
+    });
+    return category;
 }
 
 function updateQuadrants() {
@@ -279,6 +322,3 @@ function updateCategoryInputs(numberOfQuadrants) {
     }
 }
 
-// Initialize with default settings
-updateQuadrants();
-loadImageSet();
