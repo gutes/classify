@@ -141,6 +141,7 @@ function drawQuadrants(numberOfQuadrants) {
         ];
     }
     
+    let index = 0;
     positions.forEach(pos => {
         categoriesQuadrants.push({
             pos: {h: parseFloat(pos.x), y: parseFloat(pos.y)}, 
