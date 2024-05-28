@@ -1,19 +1,23 @@
 let categoryNames = {}; // Store category names
 let categoriesQuadrants = [];
 let imagesInCanvas = {}; // Track which images are in the canvas
+// Update stage on each tick
+createjs.Ticker.addEventListener("tick", function () {
+    stage.update();
+});
 
 const stage = new createjs.Stage("demoCanvas");
 const imageSets = {
     superheroes: [
-        'https://via.placeholder.com/100?text=Superhero1',
-        'https://via.placeholder.com/100?text=Superhero2',
-        'https://via.placeholder.com/100?text=Superhero3',
-        'https://via.placeholder.com/100?text=Superhero4',
-        'https://via.placeholder.com/100?text=Superhero5',
-        'https://via.placeholder.com/100?text=Superhero6',
-        'https://via.placeholder.com/100?text=Superhero7',
-        'https://via.placeholder.com/100?text=Superhero8',
-        'https://via.placeholder.com/100?text=Superhero9'
+        '/img/s01-t.png',
+        '/img/s02-t.png',
+        '/img/s03-t.png',
+        '/img/s04-t.png',
+        '/img/s05-t.png',
+        '/img/s06-t.png',
+        '/img/s07-t.png',
+        '/img/s08-t.png',
+        '/img/s09-t.png'
     ],
     periodic_table_elements: [
         'https://via.placeholder.com/100?text=Element1',
@@ -68,6 +72,7 @@ canvas.addEventListener('drop', function (event) {
 // Initialize with default settings
 updateQuadrants();
 loadImageSet();
+
 
 function drawQuadrants(numberOfQuadrants) {
     stage.clear();
@@ -135,11 +140,6 @@ function drawQuadrants(numberOfQuadrants) {
             { x: 5 * width / 6, y: 3 * height / 4, quadrantX: 2* width / 3, quadrantY: height / 2, width: width / 3, height: height / 2 }
         ];
     }
-    let index = 0;
-    /*positions.forEach(pos => {
-        categoriesQuadrants.push({pos: pos, id : `categoria${index}` });
-        index++;
-    });*/
     
     positions.forEach(pos => {
         categoriesQuadrants.push({
@@ -156,7 +156,7 @@ function drawQuadrants(numberOfQuadrants) {
     });
 
     addCategoryNames(positions, numberOfQuadrants);
-    stage.update();
+    imagesInCanvas = {}; // Reset the tracking object
 }
 
 function drawRectangle(x, y, width, height) {
@@ -183,8 +183,6 @@ function addCategoryNames(positions, numberOfQuadrants) {
         stage.addChild(text);
         index++;
     });
-
-    stage.update();
 }
 
 function loadImageSet() {
@@ -209,20 +207,22 @@ function loadImageSet() {
 }
 
 function addImageToCanvas(imgSrc, x, y) {
-    const offsetX = canvas.getBoundingClientRect().left;
-    const offsetY = canvas.getBoundingClientRect().top;
-    const image = new createjs.Bitmap(imgSrc);
+    if (!imagesInCanvas[imgSrc]){
+        const offsetX = canvas.getBoundingClientRect().left;
+        const offsetY = canvas.getBoundingClientRect().top;
+        const image = new createjs.Bitmap(imgSrc);
 
-    image.x = x - offsetX - 50; // adjusted to center the image on cursor
-    image.y = y - offsetY - 50; // adjusted to center the image on cursor
-    image.scaleX = 1; // Ensure size remains unchanged
-    image.scaleY = 1; // Ensure size remains unchanged
-    enableDragAndDrop(image);
-    stage.addChild(image);
-    stage.update();
+        image.x = x - offsetX - 50; // adjusted to center the image on cursor
+        image.y = y - offsetY - 50; // adjusted to center the image on cursor
+        image.scaleX = 0.25; // Ensure size remains unchanged
+        image.scaleY = 0.25; // Ensure size remains unchanged
+        enableDragAndDrop(image);
+        stage.addChild(image);
+        
+        console.log(categoriesQuadrants);
+        imagesInCanvas[imgSrc] = {x: image.x, y: image.y}; // Mark the image as added to the canvas`
+    }
     
-    console.log(categoriesQuadrants);
-    imagesInCanvas[imgSrc] = {x: image.x, y: image.y}; // Mark the image as added to the canvas
 }
 
 function enableDragAndDrop(target) {
@@ -230,7 +230,6 @@ function enableDragAndDrop(target) {
     target.on("pressmove", function (event) {
         event.target.x = event.stageX;
         event.target.y = event.stageY;
-        stage.update(); // Redraw the stage
     });
 
     target.on("mousedown", function (event) {
@@ -238,6 +237,7 @@ function enableDragAndDrop(target) {
         event.nativeEvent.dataTransfer.setData('src', imageUrl);
     }, false);
 }
+
 
 function saveResults() {
     const reasoning = document.getElementById('userReasoning').value;
