@@ -73,7 +73,6 @@ canvas.addEventListener('drop', function (event) {
 updateQuadrants();
 loadImageSet();
 
-
 function drawQuadrants(numberOfQuadrants) {
     stage.clear();
     stage.removeAllChildren();
@@ -241,7 +240,9 @@ function enableDragAndDrop(target) {
 
 
 function saveResults() {
+    const quadrants = document.getElementById('quadrants').value;
     const reasoning = document.getElementById('userReasoning').value;
+    const imageSetUsed = document.getElementById('imageSets').value;
     const categoryInputs = document.querySelectorAll('#categoryInputs input');
     categoryInputs.forEach(input => {
         categoryNames[input.id] = input.value.trim() || `Category ${input.id.replace('category', '')}`;
@@ -253,21 +254,22 @@ function saveResults() {
         y: child.y
     }));
 
-    console.log(imagePositions);
-
     imagePositions.forEach(img => {
         let category = "";
         img.category = determineCategoryFromQuadrants(img.x, img.y);
         //console.log (`Image ${img.imageId} is at ${determineCategoryFromQuadrants(img.x, img.y)}`) 
     });
 
-    console.log(imagePositions);
     
     const data = {
+        quadrants,
+        imageSetUsed,
         reasoning,
         categoryNames: Object.values(categoryNames),
         imagePositions
     };
+
+    console.log(data);
 
     fetch('/save', {
         method: 'POST',

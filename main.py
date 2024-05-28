@@ -10,6 +10,8 @@ class Image(BaseModel):
    y: float
 
 class Classification(BaseModel):
+    quadrants: int
+    imageSetUsed: str
     reasoning: str
     categoryNames: List[str]
     imagePositions: List[Image]
