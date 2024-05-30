@@ -1,4 +1,4 @@
-from typing import List, Set, Type
+from typing import List, Set
 from datetime import datetime
 
 from sqlalchemy import Integer
