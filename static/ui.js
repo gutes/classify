@@ -20,15 +20,18 @@ const imageSets = {
         '/img/s09-t.png'
     ],
     periodic_table_elements: [
-        'https://via.placeholder.com/100?text=Element1',
-        'https://via.placeholder.com/100?text=Element2',
-        'https://via.placeholder.com/100?text=Element3',
-        'https://via.placeholder.com/100?text=Element4',
-        'https://via.placeholder.com/100?text=Element5',
-        'https://via.placeholder.com/100?text=Element6',
-        'https://via.placeholder.com/100?text=Element7',
-        'https://via.placeholder.com/100?text=Element8',
-        'https://via.placeholder.com/100?text=Element9'
+        '/img/p01-t.png',
+        '/img/p02-t.png',
+        '/img/p03-t.png',
+        '/img/p04-t.png',
+        '/img/p05-t.png',
+        '/img/p06-t.png',
+        '/img/p07-t.png',
+        '/img/p08-t.png',
+        '/img/p09-t.png',
+        '/img/p10-t.png',
+        '/img/p11-t.png',
+        '/img/p12-t.png'
     ],
     plants: [
         'https://via.placeholder.com/100?text=Plant1',
@@ -257,7 +260,6 @@ function saveResults() {
     imagePositions.forEach(img => {
         let category = "";
         img.category = determineCategoryFromQuadrants(img.x, img.y);
-        //console.log (`Image ${img.imageId} is at ${determineCategoryFromQuadrants(img.x, img.y)}`) 
     });
 
     
@@ -268,8 +270,6 @@ function saveResults() {
         categoryNames: Object.values(categoryNames),
         imagePositions
     };
-
-    console.log(data);
 
     fetch('/save', {
         method: 'POST',
