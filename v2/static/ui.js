@@ -350,8 +350,12 @@ function nameGroups(){
             var nombre = document.createElement("input");
             nombre.type = "text";
             nombre.id = nombre.name = `grupo${i}`;
+            nombre.value = `Nombre Grupo ${i}`;
             nombre.style.display = "block";
             nombre.style.clear = "right";
+            nombre.style.marginBottom = "20px";
+
+            
             groupDiv.appendChild(nombre);
             document.getElementById("grupos").appendChild(groupDiv);
             i = i+1;
