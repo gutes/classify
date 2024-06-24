@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+  /* Estilos para el rango y la etiqueta del valor seleccionado */
+  .slider_selector {
+      width: 50%; /* Define el ancho del contenedor */
+      margin: 0 auto; /* Centra el contenedor horizontalmente */
+      text-align: center; /* Alinea el texto y el control en el centro */
+      margin-top: 30px;
+    }
+    .centrado {
+            text-align: center;
+        }
+
+        .centrado a {
+            text-decoration: none; /* Quita el subrayado */
+            padding: 5px 10px; /* Agrega un poco de espacio alrededor del texto */
+            border-radius: 5px; /* Hace los enlaces redondeados */
+            background-color: #007bff; /* Cambia el color de fondo cuando se pasa el mouse sobre el enlace */
+            color: #ffffff; /* Cambia el color del texto del enlace activo */
+          }
+
+          .centrado a:hover {
+          }
+
+          .centrado .activo {
+            color: #616161; /* Cambia el color del texto del enlace activo */
+            background-color: #f0f0f0; /* Cambia el color de fondo del enlace activo */
+          }
+
+        .centrado .small {
+            font-size: 80%; /* Reduzco el tamaño de la fuente */
+            margin-top: 15px;
+        }
+
+    /* Estilos para el rango y la etiqueta del valor seleccionado */
+    #amount {
+      border: 0;
+      color: #1b2dd1;
+      font-weight: bold;
+      text-align: center; /* Alinea el texto y el control en el centro */
+    }
+
+    #slider-range {
+      text-align: center;
+    }
+
+        /* Estilos para alinear verticalmente los checkboxes */
+        .checkbox-group {
+      display: flex;
+      flex-direction: column; /* Alinea los elementos verticalmente */
+    }
+
+    /* Estilos para los checkboxes individuales */
+    .checkbox-item {
+      margin: 5px 0; /* Espacio entre los checkboxes */
+    }
+
+    .contenedor {
+      display: flex;
+      width: 100%;
+    }
+
+    .div-izquierdo  {
+      flex: 1;
+      width: 30%;
+      padding: 20px;
+    }
+    .div-derecho {
+      flex: 1;
+      width: 70%;
+      padding: 20px;
+    }
+
+
+    .tooltip {
+        background-color: black;
+        border: none;
+        border-radius: 5px;
+        padding: 15px;
+        min-width: 400px;
+        text-align: left;
+        color: white;
+        }
+    .tooltip2 {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 5px;
+      border-radius: 5px;
+      pointer-events: none; /* Evitar que el tooltip bloquee eventos del mouse */
+      display: none; /* Ocultar el tooltip por defecto */
+      font-size: 14px; /* Cambia el tamaño de la fuente según tus preferencias */
+    }
+
+    .resaltado {
+      font-weight: bold;
+      color: white;
+    }
+
+    .no-resaltado {
+      color: rgba(201, 195, 195, 0.562);
+    }
+
+/* Estilo para el elemento <ul> dentro del tooltip */
+  .tooltip2 ul {
+  padding: 0;
+  margin: 5px;
+  font-size: 12px; /* Tamaño de fuente más pequeño para el <ul> */
+}
+
+/* Estilo para los elementos <li> dentro del <ul> */
+.tooltip2 ul li {
+  margin-left: 10px; /* Espaciado adicional para los elementos <li> */
+}
+
+.color-sample {
+            width: 10px;
+            height: 10px;
+            margin-right: 10px;
+            border: 1px solid #000;
+            display: inline-block;
+        }
+</style>
+<!-- https://d3-graph-gallery.com/graph/boxplot_horizontal.html -->
+</head>
+<body>
+  <div class="centrado">
+  <h1>Visualización de coincidencia de estudiantes en cursos</h1>
+  </div>
+    <div class="contenedor">
+        <div class="div-izquierdo">
+          <div class="centrado"  id="enlaces">
+          Visualizando datos de la edición: <b><span id="anno"></span></b><br>
+          <div class="small">
+            Cargar datos de: <a href="index.html?dataset=course_data_2023.json">2023</a> - <a href="index.html">2024</a>
+          </div>
+        </div>
+    <div class="slider_selector">
+      <div class="centrado">
+          <label for="amount">Cantidad de cursos en com&uacute;n:</label>
+          <input type="text" id="amount" readonly>
+          <div id="slider-range"></div>
+    </div>
+      </div>
+      </div>
+      <div class="div-derecho">
+
+    <!-- Los colores están en d3.schemeCategory10 -->
+    <!-- ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf']       -->
+<div class="checkbox-group">
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="0" value=0 checked>
+      <div class="color-sample"></div>Entre cables y algoritmos: Fundamentos para el uso crítico de datos y modelos de IA</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="1" value=1 checked>
+      <div class="color-sample" style="background-color: #ff7f0e;"></div>Desentrañando la caja negra. Aproximaciones a la programación con Python</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="2" value=2 checked>
+      <div class="color-sample" style="background-color: #2ca02c;"></div>La inteligencia artificial desde la óptica de la filosofía</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="3" value=3 checked>
+      <div class="color-sample" style="background-color: #d62728;"></div>Plataformas, privacidad de datos y modelos explicables</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="4" value=4 checked>
+      <div class="color-sample" style="background-color: #9467bd;"></div>La Inteligencia Artificial en debate</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="5" value=5 checked>
+      <div class="color-sample" style="background-color: #8c564b;"></div>Diálogos generativos. La IA en prácticas de enseñanza alquimizadas</label>
+    <label class="checkbox-item"><input type="checkbox" class="ejes" data-eje="6" value=6 checked>
+      <div class="color-sample" style="background-color: #e377c2;"></div> Diálogos generativos II. Evaluar con IA. Cocreaciones más allá de las tensiones.</label>
+    <p style="font-size: 12px;">Nota: El color solo aplica en las uniones de un único curso en común (además de el de "Entre cables y....")</p>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <p style="text-align:center;">
+    <svg width="1200" height="800"></svg>
+    </p>
+    <p><div id="tooltip">&nbsp;</div></p>
+    <div id="tooltip2" class="tooltip2">
+      <p>Información del nodo</p>
+    </div>
+<script>
+
+var max_course = 7;
+var current_min = 1
+var current_max = max_course
+$( function() {
+  $( "#slider-range" ).slider({
+    range: true,
+    min: 1,
+    max: max_course,
+    values: [ current_min, current_max ],
+    slide: function( event, ui ) {
+      $( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        // console.log(this.value);
+    current_min = ui.values[ 0 ];
+    current_max = ui.values[ 1 ];
+    restart()
+    // restart(ui.values[ 0 ], ui.values[ 1 ])
+    }
+  });
+  $( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+    " - " + $( "#slider-range" ).slider( "values", 1 ) );
+} );
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    color = d3.scaleOrdinal(d3.schemeCategory10);
+var a = {id: "a"},
+    b = {id: "b"},
+    c = {id: "c"},
+    d = {id: "d"},
+    nodes = [d, a, b, c],
+    label = [];
+    links = [];
+
+var simulation, g, link, node;
+
+function transformarValor(valor_original, min_original=1, max_original=max_course+1, min_nuevo=0, max_nuevo=1) {
+  return (valor_original - min_original) / (max_original - min_original) * (max_nuevo - min_nuevo) + min_nuevo;
+}
+
+const queryString = window.location.search;
+const urlParams = new URLSearchParams(queryString);
+
+var dataset = urlParams.has("dataset") ? urlParams.get("dataset") : "course_data_2024.json";
+
+d3.json(dataset, function(error, graph) {
+  if (error) throw error;
+  // console.log(graph.nodes);
+  // links = graph.links;
+  nodes = graph.nodes;
+  links = graph.links;
+
+  simulation = d3.forceSimulation(nodes)
+    .force("charge", d3.forceManyBody().strength(-100))
+    .force("link", d3.forceLink(links).distance(function (d) {return 30 * d.weight;}))
+    .force("x", d3.forceX())
+    .force("y", d3.forceY())
+    // .alphaTarget(1)
+    .on("tick", ticked);
+
+
+  g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"),
+  link = g.append("g").attr("stroke", "#000").attr("stroke-width", 5).selectAll(".link"),
+  node = g.append("g").attr("stroke", "#fff").attr("stroke-width", 1.5).selectAll(".node");
+  label = g.append("g").selectAll(".label");
+
+
+
+  d3.select("#step_val").property("value", 0);
+  d3.select("#step_val-value").text(1);
+//   restart(1, max_course);
+  restart();
+
+})
+
+var checkboxes = document.querySelectorAll('.ejes');
+
+
+function obtenerValoresChequeados() {
+  var valores = [];
+  checkboxes.forEach(function(checkbox) {
+    if (checkbox.checked) {
+      valores.push(checkbox.value);
+    }
+  });
+  return valores;
+}
+
+
+d3.selectAll(".ejes").each(function() {
+  d3.select(this).on("input", function() {
+    console.log(obtenerValoresChequeados());
+    restart();
+
+
+    // Realiza la operación deseada para cada elemento, como actualizar un valor o llamar a una función
+    // Por ejemplo, puedes agregar una lógica para mostrar u ocultar ejes específicos aquí
+  });
+});
+
+
+function interseccion(arr1, arr2) {
+  return arr1.filter(elemento => arr2.includes(elemento));
+}
+
+
+function muestro_link(d, courses) {
+    var inte = interseccion(courses, d.courses)
+    var inte_length = inte.length;
+    return (inte_length>=current_min) & (inte_length<=current_max) & (inte_length > 0)
+
+}
+
+
+
+
+function restart() {
+    courses = obtenerValoresChequeados()
+    // alpha_idx = transformarValor(course_num)
+    course_num_min = current_min;
+    course_num_max = current_max;
+    // alpha_idx = course_num
+  // Apply the general update pattern to the nodes.
+  node = node.data(nodes, function(d) { return d.id;});
+  node.exit().remove();
+  // node = node.enter().append("circle").attr("fill", function(d) { return color(d.id); })
+  node = node.enter().append("circle").attr("fill", d3.schemeCategory10[7])
+//   .attr("r", function(d) { return (Math.floor(d.size / 10) + 1) * 4; })//.attr("r", 8)
+  .attr("r", function(d) { return Math.max(d.size  * 3,6); })//.attr("r", 8)
+  .on("mouseover", function(d) {
+      var tooltipContent = "Id-estudiante: " + d.id + " - Cursos realizados: <ul>";
+
+      for (var clave in d.courses_list) {
+        var texto = d.courses_list[clave];
+        var esSubrayado = courses.includes(clave);
+        var clase = esSubrayado ? "resaltado" : "no-resaltado";
+
+        tooltipContent += "<li class='" + clase + "'>" + texto + "</li>";
+      }
+
+      tooltipContent += "</ul>";
+
+
+        // Acceder a los datos del nodo y mostrar la información en el tooltip
+        var tooltip = d3.select("#tooltip2");
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        // tooltip.html("Id-estudiante: " + d.id + " - Cursos realizados: " + d.courses)
+        tooltip.html(tooltipContent)
+          .style("left", (d.x + 10) + "px")  // Ajusta la posición x
+          .style("top", (d.y - 20) + "px")   // Ajusta la posición y
+          .style("display", "block")
+            .style("left", (d3.event.pageX + 5) + "px")
+            .style("top", (d3.event.pageY - 28) + "px");
+          // Resaltar el nodo
+        d3.select(this) // Selecciona el nodo actual
+          .style("stroke", "#666"); // Cambia el color de relleno del nodo
+          // Resaltar los enlaces conectados al nodo
+    })
+    .on("mouseout", function(d) {
+        // Ocultar el tooltip al quitar el mouse del nodo
+        var tooltip = d3.select("#tooltip2");
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+        d3.select(this) // Selecciona el nodo actual
+          .style("stroke", "#fff"); // Cambia el color de relleno del nodo
+    })
+        .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended))
+        .merge(node);
+  // node = node.enter().append("text").text(function(d) { return "-" + d.id; }).merge(node);
+  // Apply the general update pattern to the labels.
+  // Apply the general update pattern to the links.
+  link = link.data(links.filter(function (d) { return muestro_link(d, courses);}), function(d) { return d.source + "-" + d.target; })
+
+    // Añadir o actualizar los links con alpha 0.75 y grosor desde un atributo de la base de datos
+
+
+
+  // link = link.data(links, function(d) { return d.source.id + "-" + d.target.id; });
+  link.exit().remove();
+  link = link.enter().append("line")
+        .attr("stroke-opacity", 0.3) // Establece la opacidad a 0.75
+        // .attr("stroke", function(d) { return d.weight==2 ? color(d.courses[1]) : d3.schemeCategory10[7] })
+        .attr("stroke", function(d) { return d.weight==2 ? d3.schemeCategory10[d.courses[1]] : d3.schemeCategory10[7] })
+        .attr("stroke-width", function(d) { return d.weight * 1.5; }) // Usa el atributo 'grosor' de los links
+        .merge(link);
+  // Update and restart the simulation.
+  simulation.nodes(nodes);
+  simulation.force("link").links(links.filter(function (d) { return muestro_link(d, courses);}));
+  // simulation.force("link", d3.forceLink(link).distance(function (d) {return 100 * d.weight;}))
+  simulation.alpha(1).restart();
+}
+
+
+var Tooltip = d3.select("#div_template")
+    .append("div")
+    .style("opacity", 0)
+    .attr("class", "tooltip")
+    .style("background-color", "white")
+    .style("border", "solid")
+    .style("border-width", "2px")
+    .style("border-radius", "5px")
+    .style("padding", "5px")
+
+// // Agregar un elemento HTML para el tooltip
+// var tooltip = d3.select("body").append("div")
+//     .attr("id", "tooltip")
+//     .style("opacity", 0);
+
+function ticked() {
+  node.attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; })
+  link.attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+  label
+      .attr("x", function(d) { return d.x; })
+      .attr("y", function (d) { return d.y; });
+}
+
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+}
+
+    // Obtiene todos los enlaces dentro del div con id "enlaces"
+    var enlaces = document.getElementById("enlaces").getElementsByTagName("a");
+
+    // Recorre todos los enlaces
+    for (var i = 0; i < enlaces.length; i++) {
+        // Verifica si el enlace actual es el mismo que la URL actual
+        if (enlaces[i].href == window.location.href) {
+            // Agrega la clase "activo" al enlace actual
+            enlaces[i].classList.add("activo");
+
+            if (window.location.href.search("2023") > 0){
+              document.getElementById("anno").textContent = 2023;
+            } else {
+              document.getElementById("anno").textContent = 2024;
+            }
+        }
+        if (enlaces[i].href == window.location.href) {
+            // Agrega la clase "activo" al enlace actual
+            enlaces[i].classList.add("activo");
+
+            if (window.location.href.search("2023") > 0){
+              document.getElementById("anno").textContent = 2023;
+            } else {
+              document.getElementById("anno").textContent = 2024;
+            }
+        }
+        if (urlParams.size == 0) {
+            enlaces[1].classList.add("activo");
+            document.getElementById("anno").textContent = 2024;
+        }
+    }
+</script>

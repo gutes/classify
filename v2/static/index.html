@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</title>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Deshabilitar el desplazamiento vertical */
+        }
+
+        .contenedor {
+            width: 300%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.5s ease; /* Transición suave */
+        }
+
+        .pagina-container {
+            width: 50%;
+            height: 100%;
+            overflow-y: auto; /* Habilitar el desplazamiento vertical solo cuando sea necesario */
+            padding: 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .pagina-container:nth-child(2) {
+            background-color: #f0f0f0; /* Color de fondo para la segunda "página" */
+        }
+
+        .pagina {
+            max-width: 800px; /* Establecer un ancho máximo para el contenido */
+            margin: 0 auto; /* Centrar el contenido horizontalmente */
+        }
+
+        canvas {
+            background-color: white;
+            border: 1px solid #000;
+            width: 100%;
+            height: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .btn-container {
+            margin-top: 20px;
+        }
+
+        .btn-container button {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="contenedor">
+        <div class="pagina-container">
+            <div class="pagina">
+                <h3>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</h3>
+            <p>En esta actividad tendrán que agrupar a nueve superhéroes. Deberán formar entre 2 y 8 grupos con algún criterio que elijan.
+                No puede haber 9 grupos de 1 ni un grupo de 9.
+            </p>
+            <p>
+                Para esta actividad, no deben buscar información adicional a la que aparece en las imágenes (usen el conocimiento que tienen ahora).
+                Las mismas aparecerán en la pantalla a continuación.
+                Para conformar los grupos, deben arrastrar las imágenes dentro del área que encuentran debajo,
+                poniendo cerca a los personajes que componen cada grupo, y los grupos separados entre sí.
+            </p>
+            <p>Cuando terminen, descarguen la imagen (el botón está más abajo) y
+                compártanla en el foro de la actividad comentando el criterio de conformación de sus grupos.
+                </p>
+                <label for="nombre">Nombre y Apellido:</label>
+                <input type="text" id="nombre" name="nombre">
+                <div class="btn-container">
+                    <button id="comenzarBtn">Comenzar</button>
+                </div>
+            </div>
+        </div>
+        <div class="pagina-container">
+            <div class="pagina">
+                <canvas id="lienzo" width="800" height="600"></canvas>
+                <div class="btn-container">
+                    <button id="descargarBtn">Descargar imagen</button>
+                    <button id="reiniciarBtn">Reiniciar</button>
+                    <button id="volverBtn">Volver a las instrucciones</button>
+                    <button id="seguirBtn">Seguir</button>
+                </div>
+            </div>
+        </div>
+        <div class="pagina-container">
+            <div class="pagina">
+                <div class="btn-container">
+                    <text>Ahora a ponerle nombre a los grupos! Cómo los clasificaste?</text>
+                    <div id="grupos" class="grupos-container"></div>
+                    
+                    <button id="componentesBtn">Ver Componenetes</button>
+                    <button id="volverCanvasBtn">Volver al ejercicio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="graph_func.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>
