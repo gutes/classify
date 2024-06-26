@@ -31,10 +31,9 @@ def save_user_classification(session : Session, user_classification : Classifica
             new_classification = Classification(image=image, 
                                                 category=image_category, 
                                                 classification_details=classification_details)
-        
-        session.add(new_classification)
-        session.commit()
-        session.refresh(new_classification) # Gets the new inserted id for the classification
+            session.add(new_classification)
+            session.commit()
+            session.refresh(new_classification) # Gets the new inserted id for the classification
 
     
      
