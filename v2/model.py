@@ -14,19 +14,11 @@ from sqlalchemy.orm import DeclarativeBase
 # Database model
 class Base(DeclarativeBase):
     pass
-
-class Topic(Base):
-    __tablename__ = "topic"
-    id : Mapped[int] = mapped_column(primary_key=True) 
-    images : Mapped[List["Image"]] = relationship(back_populates="topic")
-    name : Mapped[str] = mapped_column(String(50))
     
 class Image(Base):
     __tablename__ = "image"
     id : Mapped[int] = mapped_column(primary_key=True) 
     name : Mapped[str] = mapped_column(String(50))
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topic.id"))
-    topic: Mapped["Topic"] = relationship(back_populates="images")
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="image")
 
 class Category(Base):
@@ -51,6 +43,7 @@ class Classification(Base):
 class ClassificationDetails(Base):
     __tablename__ = "classification_details"
     id : Mapped[int] = mapped_column(primary_key=True)
+    name : Mapped[str] = mapped_column(String(200))
     reasoning : Mapped[str] = mapped_column(String(200))
     date: Mapped[datetime] = mapped_column(insert_default=func.now())
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="classification_details")

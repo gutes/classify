@@ -1,10 +1,3 @@
-// document.getElementById("comenzarBtn").addEventListener("click", function () {
-//     document.querySelector(".contenedor").style.transform = "translateX(-50%)"; // Desplazar a la izquierda
-// });
-// var text = new createjs.Text("Clasifiación de " + nombre, "12px Arial", "#000000");
-
-// var text = new createjs.Text("Clasificación de " + nombre, "12px Arial", "#000000");
-
 var text = new createjs.Text();
 
 var colors_palette = ["#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"]
@@ -21,9 +14,7 @@ createjs.Touch.enable(stage);
 var fondo = new createjs.Shape();
 fondo.graphics.beginFill("#AAAAAA66")
         .drawRect(0, canvas.height-120, canvas.width, canvas.height);
-
 stage.addChild(fondo);
-
 
 // Crear un contenedor para las imágenes
 var contenedor = new createjs.Container();
@@ -57,7 +48,7 @@ createjs.Ticker.addEventListener("tick", function () {
 // Botón Comenzar
 document.getElementById("comenzarBtn").addEventListener("click", function () {
     // Obtener el nombre ingresado por el usuario
-    var nombre = document.getElementById("nombre").value;
+    let nombre = document.getElementById("nombre").value;
 
     text.text = "Clasificación de " + nombre
     text.font = "12px Arial"
@@ -73,7 +64,7 @@ document.getElementById("comenzarBtn").addEventListener("click", function () {
 
 // Botón seguir - nombrar categorias
 document.getElementById("seguirBtn").addEventListener("click", function () {
-    console.log("Seguir!")
+    nameGroups();
     document.querySelector(".contenedor").style.transform = "translateX(-66%)"; // Desplazar a la izquierda
 });
 
@@ -91,7 +82,7 @@ document.getElementById("volverCanvasBtn").addEventListener("click", function ()
 // Botón de reinicio
 document.getElementById("reiniciarBtn").addEventListener("click", function () {
     // Obtener el nombre ingresado por el usuario
-    for (var key in current_elems) {
+    for (let key in current_elems) {
         bitmap = current_elems[key];
         set_initial_positions(bitmap, key);
         bitmap.shadow = null;
@@ -102,27 +93,25 @@ document.getElementById("reiniciarBtn").addEventListener("click", function () {
     updateText()
 });
 
-// Botón de componentes / save
-document.getElementById("componentesBtn").addEventListener("click", function () {
-    // Obtener el nombre ingresado por el usuario
-    console.log("========================================");
-    //console.log(grafo.getConnectedComponents());
-    nameGroups();
+// Botón Guardar
+document.getElementById("saveBtn").addEventListener("click", function () {
+    saveResults();
+    
 });
 
 // Botón de descarga
 document.getElementById("descargarBtn").addEventListener("click", function () {
     accentsTidy = function(s){
-        var r = s.toLowerCase();
+        let r = s.toLowerCase();
         non_asciis = {'a': '[àáâãäå]', 'ae': 'æ', 'c': 'ç', 'e': '[èéêë]', 'i': '[ìíîï]', 'n': 'ñ', 'o': '[òóôõö]', 'oe': 'œ', 'u': '[ùúûűü]', 'y': '[ýÿ]'};
         for (i in non_asciis) { r = r.replace(new RegExp(non_asciis[i], 'g'), i); }
         return r;
     };
 
     // Convertir el contenido del lienzo a una imagen PNG
-    var dataURL = canvas.toDataURL("image/png");
+    let dataURL = canvas.toDataURL("image/png");
 
-    var nombre = ""; //document.getElementById("nombre").value;
+    let nombre = ""; //document.getElementById("nombre").value;
 
     nombre = accentsTidy(nombre);
     nombre = nombre.replace(/ /g, "_");
@@ -178,13 +167,11 @@ function updateText(){
         textContChar.color = "#FF0000";
     }
 
-    // text.text += "\nHay " + groups_on_stage + " grupos"
     textContChar.font = "14px Arial"
     textContChar.x = canvas.width - 10;
     textContChar.y = 30;
     textContChar.textAlign = "right";
     textContChar.textBaseline = "alphabetic";
-    // stage.addChild(text);
 }
 
 function selectColor(number) {
@@ -195,13 +182,12 @@ function selectColor(number) {
 function get_near_images(bitmap) {
     threshold = 110;
     near_images = [];
-    for (var key in current_on_stage) {
-        // console.log("Current image position", bitmap.x, bitmap.y)
+    for (let key in current_on_stage) {
         if (current_on_stage[key].image.src == bitmap.image.src) {
             continue;
         }
-        var other_bitmap = current_on_stage[key];
-        var distance = Math.sqrt(Math.pow(bitmap.x - other_bitmap.x, 2) + Math.pow(bitmap.y - other_bitmap.y, 2));
+        let other_bitmap = current_on_stage[key];
+        let distance = Math.sqrt(Math.pow(bitmap.x - other_bitmap.x, 2) + Math.pow(bitmap.y - other_bitmap.y, 2));
         if (distance < threshold) {
             near_images.push(other_bitmap);
         }
@@ -212,23 +198,15 @@ function get_near_images(bitmap) {
 
 function updateShadows(){
     grafo.getConnectedComponents().forEach(group => {
-        // if (group.length > 1){
-            console.log("Group", group);
-            var minValue = Math.min.apply(Math, group);
-            var col_shadow = selectColor(minValue); //colors_palette[minValue%colors_palette.length];
+            let minValue = Math.min.apply(Math, group);
+            let col_shadow = selectColor(minValue); //colors_palette[minValue%colors_palette.length];
             group.forEach(elem => {
                 if (elem in current_on_stage){
                     current_elems[elem].shadow = new createjs.Shadow(col_shadow, 0, 0, 40);
                 } else {
                     current_elems[elem].shadow = null;
                 }
-                // current_elems[elem].group = group[0];
             });
-        // } else {
-        //     current_elems[group[0]].shadow = null;
-        //     // current_elems[group[0]].group = group[0];
-        // }
-
     });
     updateText();
 
@@ -236,11 +214,11 @@ function updateShadows(){
 
 // Función para cargar las imágenes
 function cargarImagenes() {
-    for (var i = 0; i < imagenes.length; i++) {
-        var imagen = new Image();
+    for (let i = 0; i < imagenes.length; i++) {
+        let imagen = new Image();
         imagen.src = imagenes[i];
-        imagen.id = imagenes[i]; // Este id va a la DB - filename con full path
-        // imagen.shadow = new createjs.Shadow("#000000", 50, 50, 50);
+        imagen.id = imagenes[i]; // Este id va a la DB - filename 
+
 
         imagen.index = i;
         imagen.onload = handleImageLoad;
@@ -254,7 +232,6 @@ function set_initial_positions(bitmap, index){
 
 // Función para manejar la carga de imágenes
 function handleImageLoad(event) {
-    // console.log(event.target)
     var image = event.target;
     var bitmap = new createjs.Bitmap(image);
 
@@ -275,10 +252,7 @@ function handleImageLoad(event) {
     var anchoEscalado = bitmap.getBounds().width;
     var altoEscalado = bitmap.getBounds().height;
 
-    // bitmap.x = positions[image.index][0];
-    // bitmap.y = positions[image.index][1];
     set_initial_positions(bitmap, image.index);
-    // bitmap.shadow = new createjs.Shadow("#FF0000", 0, 0, 10);
 
     // Configurar interactividad para arrastrar y soltar
     bitmap.on("pressmove", function (evt) {
@@ -292,29 +266,19 @@ function handleImageLoad(event) {
 
 
     bitmap.on("pressup", function (evt) {
-        // console.log("pressup");
         var currentBitmap = evt.currentTarget;
         grafo.removeEdgesOfNode(currentBitmap.image.index);
 
         if (evt.stageY < canvas.height-120){
-            // add shadow to object
-            // var col_shadow = "#FF0000"
-            // col_shadow = get_shadow_color_temp(currentBitmap);
-
             get_near_images(currentBitmap).forEach(function (elem) {
                 grafo.addEdge(currentBitmap.image.index, elem.image.index);
             });
-            // console.log("col_shadow", col_shadow)
-            // currentBitmap.shadow = new createjs.Shadow(col_shadow, 0, 0, 40);
+
             current_on_stage[evt.currentTarget.image.index] = currentBitmap;
         } else {
-            // currentBitmap.shadow = null//new createjs.Shadow("#00FF00", 0, 0, 10);
-            // currentBitmap.group = currentBitmap.index;
             delete current_on_stage[evt.currentTarget.image.index];
         }
         updateShadows();
-        console.log("Cantidad elems", Object.keys(current_on_stage).length);
-        console.log(current_on_stage);
     });
 
     // Agregar la imagen al escenario
@@ -323,34 +287,37 @@ function handleImageLoad(event) {
 }
 
 function nameGroups(){
-    let i = 0;
+    var i = 0;
     
-    // Borro los grupos 
+    // Borro los grupos por si cambiaron
+    current_groups = {};
+
     document.getElementById("grupos").innerHTML = "";
 
     grafo.getConnectedComponents().forEach(group => {
-            console.log("---Grupo:", i)
-            var groupDiv = document.createElement("div");
+            let groupDiv = document.createElement("div");
             groupDiv.style.border = "1px solid black";
             groupDiv.style.margin = "5px";
-            groupDiv.style.height = "180px";
+            groupDiv.style.height = "auto";
             groupDiv.style.display= "block";
 
+            current_groups[`grupo${i}`] = {group_name : "", images : []}; 
+        
             group.forEach(elem => {
-                var imagen = new Image();
+                let imagen = new Image();
                 imagen.src = current_elems[elem].id;
                 imagen.style.display = "inline";
                 imagen.style.margin = "5px";
-                imagen.style.height = "80%";
-                //imagen.onload = handleImageLoad;
+                imagen.style.height = "150px";
                 groupDiv.appendChild(imagen);
+                current_groups[`grupo${i}`].images.push({ name : current_elems[elem].id.split("/")[1]});
             });
 
             // Agregar input para el nombre
-            var nombre = document.createElement("input");
+            let nombre = document.createElement("input");
             nombre.type = "text";
             nombre.id = nombre.name = `grupo${i}`;
-            nombre.value = `Nombre Grupo ${i}`;
+            nombre.placeholder = `Nombre Grupo ${i}`;
             nombre.style.display = "block";
             nombre.style.clear = "right";
             nombre.style.marginBottom = "20px";
@@ -358,27 +325,30 @@ function nameGroups(){
             
             groupDiv.appendChild(nombre);
             document.getElementById("grupos").appendChild(groupDiv);
-            i = i+1;
+            i++;
 
     });
-    console.log("----------")
-    console.log(current_elems);
-    
-
 }
 
+function saveResults() { 
 
-/*function saveResults() {
-    // Las componentes conexas son objetos [idImg1, idImg2, ... ]
-    let componentes = grafo.getConnectedComponents()    
-
+    let current_groups_list = []
+    let i = 0;
     
+    for (group in current_groups){
+        let gname = document.getElementById(`grupo${i}`).value;
+        current_groups[`grupo${i}`].group_name = gname;
+        current_groups_list.push({  "group_name" : gname, "images": current_groups[`grupo${i}`].images})
+        i++;
+    };
+    
+    reasoning = document.getElementById("reasoning").value;
+    user_name = document.getElementById("nombre").value;
+
     const data = {
-        quadrants,
-        imageSetUsed,
-        reasoning,
-        categoryNames: Object.values(categoryNames),
-        imagePositions
+        "user_name" : user_name,
+        "reasoning": reasoning,
+        "current_groups": current_groups_list,
     };
 
     fetch('/save', {
@@ -395,7 +365,7 @@ function nameGroups(){
             console.error('Error saving results:', error);
             alert('Failed to save results.');
         });
-}*/
+}
 
  
 
