@@ -294,7 +294,7 @@ function nameGroups(){
 
     document.getElementById("grupos").innerHTML = "";
 
-    grafo.getConnectedComponents().forEach(group => {
+    grafo.getConnectedComponents().sort((a, b) => b.length-a.length).forEach(group => {
             let groupDiv = document.createElement("div");
             groupDiv.style.border = "1px solid black";
             groupDiv.style.margin = "5px";
