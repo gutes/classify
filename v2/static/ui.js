@@ -25,6 +25,9 @@ var textContGroups = new createjs.Text();
 stage.addChild(textContChar);
 stage.addChild(textContGroups);
 
+var timeline = [];
+localStorage.setItem('timeline', JSON.stringify(timeline));
+
 // Lista de imágenes - en orden aleatorio
 var imagenes = [ "img/s01-t.png", "img/s02-t.png", "img/s03-t.png", "img/s04-t.png", "img/s05-t.png", "img/s06-t.png", "img/s07-t.png", "img/s08-t.png", "img/s09-t.png"];
 imagenes.sort(() => Math.random() - 0.5);
@@ -273,17 +276,34 @@ function handleImageLoad(event) {
             get_near_images(currentBitmap).forEach(function (elem) {
                 grafo.addEdge(currentBitmap.image.index, elem.image.index);
             });
-
             current_on_stage[evt.currentTarget.image.index] = currentBitmap;
         } else {
             delete current_on_stage[evt.currentTarget.image.index];
         }
         updateShadows();
+        saveStageState();
     });
 
     // Agregar la imagen al escenario
     contenedor.addChild(bitmap);
     stage.update();
+}
+
+function saveStageState(){
+    let current_state = [];
+
+    for (let key in current_on_stage){
+        current_state.push({'id' : current_on_stage[key].image.src, 
+                            'x'  : current_on_stage[key].x, 
+                            'y'  : current_on_stage[key].y});
+    };
+    
+    frame = {'timestamp': Math.floor(Date.now() / 1000),
+            'stage_state' : current_state
+        };
+    timeline = JSON.parse(localStorage.getItem('timeline'));
+    timeline.push(frame);
+    localStorage.setItem('timeline', JSON.stringify(timeline));
 }
 
 function nameGroups(){
