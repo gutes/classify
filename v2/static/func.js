@@ -110,6 +110,7 @@ function handleImageLoad(event) {
     stage.update();
 }
 
+// Función para guardar un frame con el estado actual del stage
 function saveStageState(){
     let current_state = [];
 
@@ -127,6 +128,7 @@ function saveStageState(){
     localStorage.setItem('timeline', JSON.stringify(timeline));
 }
 
+// Función para nombrar los grupos
 function nameGroups(){
     var i = 0;
     
@@ -172,6 +174,7 @@ function nameGroups(){
     });
 }
 
+// Validación stage
 function validateStage(){
     // Todas las imagenes en el escenario y no puede haber una imagen en cada grupo
 
