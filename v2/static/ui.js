@@ -67,8 +67,14 @@ document.getElementById("comenzarBtn").addEventListener("click", function () {
 
 // Botón seguir - nombrar categorias
 document.getElementById("seguirBtn").addEventListener("click", function () {
-    nameGroups();
-    document.querySelector(".contenedor").style.transform = "translateX(-66%)"; // Desplazar a la izquierda
+    if (validateStage()){
+        nameGroups();
+        document.querySelector(".contenedor").style.transform = "translateX(-66%)"; // Desplazar a la izquierda
+        document.getElementById("ErrAllImgs").style.visibility = "hidden";
+    }else{
+        console.log("ERR");
+        document.getElementById("ErrAllImgs").style.visibility = "visible";
+    }
 });
 
 // Botón volver
@@ -129,6 +135,15 @@ document.getElementById("descargarBtn").addEventListener("click", function () {
     enlace.click();
     document.body.removeChild(enlace);
 });
+function validateStage(){
+    // Todas las imagenes en el escenario y no puede haber una imagen en cada grupo
+
+    let remaing_images = imagenes.length - Object.keys(current_on_stage).length;
+    if ((remaing_images > 0) || (groups_on_stage == imagenes.length)){
+        return false;
+    }
+    return true;
+}
 
 function updateText(){
     ids_on_stage = Object.keys(current_on_stage).map(function(x) { return parseInt(x); });

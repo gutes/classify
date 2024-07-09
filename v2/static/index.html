@@ -56,6 +56,11 @@
             display: block;
             margin: 20px auto;
         }
+
+        .formError{
+            visibility: hidden;
+            border: 1px solid red;
+        }
     </style>
 </head>
 <body>
@@ -89,7 +94,7 @@
                     <button id="descargarBtn">Descargar imagen</button>
                     <button id="reiniciarBtn">Reiniciar</button>
                     <button id="volverBtn">Volver a las instrucciones</button>
-                    <button id="seguirBtn">Seguir</button>
+                    <button id="seguirBtn">Seguir</button><div id="ErrAllImgs" class="formError"><p>Todas las imágenes deben estar en algún grupo y no pueden estar cada una en su propio grupo!</p></div>
                 </div>
             </div>
         </div>
