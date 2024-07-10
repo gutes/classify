@@ -1,7 +1,6 @@
-from typing import List, Set
+from typing import Set
 from datetime import datetime
 
-from sqlalchemy import Integer
 from sqlalchemy import ForeignKey
 from sqlalchemy import create_engine, func, String
 
@@ -9,7 +8,6 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy.types import JSON
 
 
 # Database model

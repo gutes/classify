@@ -1,8 +1,11 @@
 from fastapi import FastAPI, APIRouter, Depends
 from fastapi.staticfiles import StaticFiles
 
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 # Import DB and API models
-from api_model import ImageCreate, ClassificationCreate 
+from api_model import ClassificationCreate 
 from model import *
 from dbutils import *
 

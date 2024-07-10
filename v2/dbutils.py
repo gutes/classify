@@ -1,6 +1,6 @@
 import json
 
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session
 from typing import Type
 
 from model import * 
@@ -17,6 +17,7 @@ def get_or_create(session: Session, model : Type[Base], **kwargs):
     return instance
     
 def save_user_classification(session : Session, user_classification : ClassificationCreate) -> bool:
+
     # Create and save classification details
     classification_details = ClassificationDetails(reasoning=user_classification.reasoning,
                                                    name=user_classification.user_name,
