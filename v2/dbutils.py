@@ -1,3 +1,5 @@
+import json
+
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Type
 
@@ -17,7 +19,8 @@ def get_or_create(session: Session, model : Type[Base], **kwargs):
 def save_user_classification(session : Session, user_classification : ClassificationCreate) -> bool:
     # Create and save classification details
     classification_details = ClassificationDetails(reasoning=user_classification.reasoning,
-                                                   name=user_classification.user_name)
+                                                   name=user_classification.user_name,
+                                                   timeline=json.dumps(user_classification.timeline))
     session.add(classification_details)
     session.commit()
     session.refresh(classification_details)

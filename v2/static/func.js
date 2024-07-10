@@ -115,7 +115,7 @@ function saveStageState(){
     let current_state = [];
 
     for (let key in current_on_stage){
-        current_state.push({'id' : current_on_stage[key].image.src, 
+        current_state.push({'name' : current_on_stage[key].image.id.split("/")[1], 
                             'x'  : current_on_stage[key].x, 
                             'y'  : current_on_stage[key].y});
     };
@@ -246,11 +246,13 @@ function saveResults() {
     
     reasoning = document.getElementById("reasoning").value;
     user_name = document.getElementById("nombre").value;
+    timeline = JSON.stringify(localStorage.getItem("timeline")); 
 
     const data = {
         "user_name" : user_name,
         "reasoning": reasoning,
         "current_groups": current_groups_list,
+        "timeline" : timeline
     };
 
     fetch('/save', {

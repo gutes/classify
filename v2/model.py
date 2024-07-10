@@ -9,6 +9,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.types import JSON
 
 
 # Database model
@@ -40,6 +41,7 @@ class Classification(Base):
     classification_details_id = mapped_column(ForeignKey("classification_details.id"))
     classification_details : Mapped["ClassificationDetails"] = relationship(back_populates="classifications")
 
+
 class ClassificationDetails(Base):
     __tablename__ = "classification_details"
     id : Mapped[int] = mapped_column(primary_key=True)
@@ -47,3 +49,4 @@ class ClassificationDetails(Base):
     reasoning : Mapped[str] = mapped_column(String(200))
     date: Mapped[datetime] = mapped_column(insert_default=func.now())
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="classification_details")
+    timeline: Mapped[str] # JSON string
