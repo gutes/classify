@@ -102,7 +102,7 @@ function handleImageLoad(event) {
             delete current_on_stage[evt.currentTarget.image.index];
         }
         updateShadows();
-        saveStageState();
+        saveStageState(); // Guardo el frame del timeline
     });
 
     // Agregar la imagen al escenario
@@ -176,7 +176,7 @@ function nameGroups(){
 
 // Validación stage
 function validateStage(){
-    // Todas las imagenes en el escenario y no puede haber una imagen en cada grupo
+    // Todas las imagenes en el escenario y no puede haber un grupo por imagen
 
     let remaing_images = imagenes.length - Object.keys(current_on_stage).length;
     if ((remaing_images > 0) || (groups_on_stage == imagenes.length)){
@@ -294,10 +294,10 @@ function saveResults() {
     }).then(response => response.json())
         .then(data => {
             console.log(data);
-            alert('Results saved successfully!');
+            alert('Datos Guardados!');
         }).catch(error => {
             console.error('Error saving results:', error);
-            alert('Failed to save results.');
+            alert('Error guardando datos.');
         });
 }
 
