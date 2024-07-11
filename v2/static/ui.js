@@ -52,11 +52,13 @@ createjs.Ticker.addEventListener("tick", function () {
 
 // Botón Comenzar
 document.getElementById("introBtn").addEventListener("click", function () {
-    // Obtener el nombre ingresado por el usuario
-    let nombre = document.getElementById("nombre").value;
-
-    // Desplazar a la segunda página
-    document.querySelector(".contenedor").style.transform = "translateX(-20%)"; // Desplazar a la izquierda
+    // Validar que haya ingresado sus datos personales
+    if (validatePersonalData()){
+        document.querySelector(".contenedor").style.transform = "translateX(-20%)"; // Desplazar a la izquierda
+        document.getElementById("ErrAllData").style.visibility = "hidden";
+    }else{
+        document.getElementById("ErrAllData").style.visibility = "visible";
+    }
 });
 
 // Botón Comenzar
@@ -98,7 +100,12 @@ document.getElementById("volverCanvasBtn").addEventListener("click", function ()
 });
 // Botón finalizar y preguntar nivel de expertise
 document.getElementById("seguirBtn-2").addEventListener("click", function () {
-    document.querySelector(".contenedor").style.transform = "translateX(-80%)"; // Desplazar a la derecha
+    if (validateGroupNames()){
+        document.querySelector(".contenedor").style.transform = "translateX(-80%)"; // Desplazar a la derecha
+        document.getElementById("ErrGroupNames").style.visibility = "hidden";
+    }else{
+        document.getElementById("ErrGroupNames").style.visibility = "visible";
+    }
 });
 
 // Botón de reinicio
@@ -115,7 +122,7 @@ document.getElementById("reiniciarBtn").addEventListener("click", function () {
     updateText()
 });
 
-// Botón Guardar
+// Botón Guardar y Terminar
 document.getElementById("saveBtn").addEventListener("click", function () {
     saveResults();    
 });

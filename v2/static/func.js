@@ -185,6 +185,28 @@ function validateStage(){
     return true;
 }
 
+function validatePersonalData(){
+    let name = document.getElementById("nombre").value;
+    let age = document.getElementById("edad").value;
+    let career = document.getElementById("carrera").value;
+    let background = document.getElementById("background").value;
+
+    return ((name != "") && (age != "") && !isNaN(age) && (career != "") && (background != ""));
+}
+
+function validateGroupNames(){
+    let allCompleted = (document.getElementById("reasoning").value != "");
+    let i = 0;
+
+    if (allCompleted){
+        for (_ in current_groups){
+            allCompleted &= (document.getElementById(`grupo${i}`).value != "");
+            i++;
+        }
+    }
+    return allCompleted;
+}
+
 function updateText(){
     ids_on_stage = Object.keys(current_on_stage).map(function(x) { return parseInt(x); });
     groups_on_stage = grafo.getConnectedComponentsNumber(ids_on_stage)
