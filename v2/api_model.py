@@ -11,7 +11,10 @@ class GroupingCreate(BaseModel):
 
 class ClassificationCreate(BaseModel):
     user_name: str
+    age: int
+    career: str
+    background: str
+    knowledge: int
     reasoning: str
     current_groups: List[GroupingCreate]
     timeline : str
-

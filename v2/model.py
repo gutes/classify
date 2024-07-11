@@ -2,7 +2,7 @@ from typing import Set
 from datetime import datetime
 
 from sqlalchemy import ForeignKey
-from sqlalchemy import create_engine, func, String
+from sqlalchemy import create_engine, func, String, Integer
 
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
@@ -44,6 +44,10 @@ class ClassificationDetails(Base):
     __tablename__ = "classification_details"
     id : Mapped[int] = mapped_column(primary_key=True)
     name : Mapped[str] = mapped_column(String(200))
+    age: Mapped[int] = mapped_column(Integer)
+    career: Mapped[str] = mapped_column(String(100))
+    background: Mapped[str] = mapped_column(String(200))
+    knowledge: Mapped[str] = mapped_column(String(250))
     reasoning : Mapped[str] = mapped_column(String(200))
     date: Mapped[datetime] = mapped_column(insert_default=func.now())
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="classification_details")

@@ -246,10 +246,18 @@ function saveResults() {
     
     reasoning = document.getElementById("reasoning").value;
     user_name = document.getElementById("nombre").value;
+    age = document.getElementById("edad").value;
+    career = document.getElementById("carrera").value;
+    background = document.getElementById("background").value;
+    knowledge = document.getElementById("knowledge").value;
     timeline = JSON.stringify(localStorage.getItem("timeline")); 
 
     const data = {
         "user_name" : user_name,
+        "age" : age,
+        "career" : career,
+        "background" : background,
+        "knowledge" : knowledge,
         "reasoning": reasoning,
         "current_groups": current_groups_list,
         "timeline" : timeline

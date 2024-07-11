@@ -48,6 +48,17 @@ createjs.Ticker.addEventListener("tick", function () {
 });
 
 /* Event handlers para los botones */
+
+
+// Botón Comenzar
+document.getElementById("introBtn").addEventListener("click", function () {
+    // Obtener el nombre ingresado por el usuario
+    let nombre = document.getElementById("nombre").value;
+
+    // Desplazar a la segunda página
+    document.querySelector(".contenedor").style.transform = "translateX(-20%)"; // Desplazar a la izquierda
+});
+
 // Botón Comenzar
 document.getElementById("comenzarBtn").addEventListener("click", function () {
     // Obtener el nombre ingresado por el usuario
@@ -62,14 +73,14 @@ document.getElementById("comenzarBtn").addEventListener("click", function () {
     text.textBaseline = "alphabetic";
     stage.addChild(text);
     // Desplazar a la segunda página
-    document.querySelector(".contenedor").style.transform = "translateX(-33%)"; // Desplazar a la izquierda
+    document.querySelector(".contenedor").style.transform = "translateX(-40%)"; // Desplazar a la izquierda
 });
 
 // Botón seguir - nombrar categorias
 document.getElementById("seguirBtn").addEventListener("click", function () {
     if (validateStage()){
         nameGroups();
-        document.querySelector(".contenedor").style.transform = "translateX(-66%)"; // Desplazar a la izquierda
+        document.querySelector(".contenedor").style.transform = "translateX(-60%)"; // Desplazar a la izquierda
         document.getElementById("ErrAllImgs").style.visibility = "hidden";
     }else{
         document.getElementById("ErrAllImgs").style.visibility = "visible";
@@ -78,14 +89,17 @@ document.getElementById("seguirBtn").addEventListener("click", function () {
 
 // Botón volver
 document.getElementById("volverBtn").addEventListener("click", function () {
-    document.querySelector(".contenedor").style.transform = "translateX(0)"; // Desplazar a la derecha
+    document.querySelector(".contenedor").style.transform = "translateX(-20%)"; // Desplazar a la derecha
 });
 
 // Botón volver al canvas
 document.getElementById("volverCanvasBtn").addEventListener("click", function () {
-    document.querySelector(".contenedor").style.transform = "translateX(-33%)"; // Desplazar a la derecha
+    document.querySelector(".contenedor").style.transform = "translateX(-40%)"; // Desplazar a la derecha
 });
-
+// Botón finalizar y preguntar nivel de expertise
+document.getElementById("seguirBtn-2").addEventListener("click", function () {
+    document.querySelector(".contenedor").style.transform = "translateX(-80%)"; // Desplazar a la derecha
+});
 
 // Botón de reinicio
 document.getElementById("reiniciarBtn").addEventListener("click", function () {
@@ -103,8 +117,7 @@ document.getElementById("reiniciarBtn").addEventListener("click", function () {
 
 // Botón Guardar
 document.getElementById("saveBtn").addEventListener("click", function () {
-    saveResults();
-    
+    saveResults();    
 });
 
 // Botón de descarga

@@ -21,7 +21,12 @@ def save_user_classification(session : Session, user_classification : Classifica
     # Create and save classification details
     classification_details = ClassificationDetails(reasoning=user_classification.reasoning,
                                                    name=user_classification.user_name,
+                                                   career=user_classification.career,
+                                                   age=user_classification.age,
+                                                   background=user_classification.background,
+                                                   knowledge = user_classification.knowledge,
                                                    timeline=json.dumps(user_classification.timeline))
+    
     session.add(classification_details)
     session.commit()
     session.refresh(classification_details)

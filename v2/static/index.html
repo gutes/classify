@@ -15,7 +15,7 @@
         }
 
         .contenedor {
-            width: 300%;
+            width: 500%; /* 5* #pasos */
             height: 100%;
             display: flex;
             transition: transform 0.5s ease; /* Transición suave */
@@ -70,6 +70,23 @@
         <div class="pagina-container">
             <div class="pagina">
                 <h3>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</h3>
+                <p>Gracias por participar de esta actividad. Antes de empezar, contanos un poco sobre vos:</p>
+                <label for="nombre">Nombre y Apellido:</label>
+                <input type="text" id="nombre" name="nombre"><br/>
+                <label for="edad">Edad:</label>
+                <input type="text" id="edad" name="edad"><br/>
+                <label for="carrera">¿Estudiás? ¿Qué Carrera?</label>
+                <input type="text" id="carrera" name="carrera"><br/>
+                <label for="background">¿Algo mas que nos quieras contar sobre vos?</label>
+                <textarea id="background" name="background"></textarea>
+                <div class="btn-container">
+                    <button id="introBtn">Comenzar</button>
+                </div>
+            </div>
+        </div>
+        <div class="pagina-container">
+            <div class="pagina">
+                <h3>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</h3>
             <p>En esta actividad tendrán que agrupar a nueve superhéroes. Deberán formar entre 2 y 8 grupos con algún criterio que elijan.
                 No puede haber 9 grupos de 1 ni un grupo de 9.
             </p>
@@ -82,10 +99,8 @@
             <p>Cuando terminen, descarguen la imagen (el botón está más abajo) y
                 compártanla en el foro de la actividad comentando el criterio de conformación de sus grupos.
                 </p>
-                <label for="nombre">Nombre y Apellido:</label>
-                <input type="text" id="nombre" name="nombre">
                 <div class="btn-container">
-                    <button id="comenzarBtn">Comenzar</button>
+                    <button id="comenzarBtn">Seguir</button>
                 </div>
             </div>
         </div>
@@ -106,8 +121,19 @@
                     <text>Ahora a ponerle nombre a los grupos!</text><br/>
                     <textarea name="reasoning" id="reasoning"  placeholder="Describí brevemente qué criterio usaste para agruparlos."></textarea>
                     <div id="grupos" class="grupos-container"></div>
-                    <button id="saveBtn">Guardar!</button>
+                    <button id="seguirBtn-2">Seguir</button>
                     <button id="volverCanvasBtn">Volver al ejercicio</button>
+                </div>
+            </div>
+        </div>
+        <div class="pagina-container">
+            <div class="pagina">
+                <div class="btn-container">
+                    <text>Ya casi estamos. Contanos, del 1 al 10, cuaánto creés vos que sabés sobre Superhéroes, siendo 1 equivalente a "se muy poco" y 10 "Soy fanátic@, sé vida y obra de Linterna Verde.".</text><br/><br/>
+                    <text>Por ejemplo: Si nunca viste un dibujito animado o leiste un comic, por ahí un 1 o un 2 van bien con tu perfil. Si, en cambio, conoces</text><br/>
+                    <input type="range" class="slider-knowledge" id="knowledge" min="1" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
+                    <output>5</output>
+                    <button id="saveBtn">Guardar y Terminar!</button>
                 </div>
             </div>
         </div>
