@@ -256,6 +256,32 @@ function updateText(){
     textContChar.textBaseline = "alphabetic";
 }
 
+function isAWorkingUser(){
+    return localStorage.getItem("current_user");
+}
+
+function storeWorkingUser(){
+        // Guardo datos del usuario
+        let user = {
+            "nombre" : document.getElementById("nombre").value,
+            "edad"   : document.getElementById("edad").value,
+            "carrera"   : document.getElementById("carrera").value,
+            "background"   : document.getElementById("background").value,
+        }
+
+        localStorage.setItem("current_user", JSON.stringify(user));
+}
+
+function fillWorkingUserData(){
+    let user = JSON.parse(localStorage.getItem("current_user"));
+
+    document.getElementById("nombre").value = user.nombre;
+    document.getElementById("edad").value = user.edad;
+    document.getElementById("carrera").value = user.carrera;
+    document.getElementById("background").value = user.background;
+}
+
+
 function saveResults() { 
 
     let current_groups_list = []

@@ -34,6 +34,7 @@ try {
     var experiment_ids = shuffleArray(atob(urlParams.get("exp")).split("|")); // get base64 encoded experiments (2) and shuffle it
 }catch (error){
     console.error("ERROR: Experiment Key erronea");
+    stop();
 }
 
 
@@ -71,13 +72,23 @@ if (experiment_ids.length > 0) {
         createjs.Ticker.addEventListener("tick", function () {
             stage.update();
         });
-
+        
+        // Si el usuario ya esta haciendo experimentos entonces relleno sus datos
+        if (isAWorkingUser()){
+            // Relleno los datos del usuario actual
+            fillWorkingUserData();
+        }
+        
         /* Event handlers para los botones */
-
         // Botón Comenzar
         document.getElementById("introBtn").addEventListener("click", function () {
             // Validar que haya ingresado sus datos personales
             if (validatePersonalData()){
+                if (isAWorkingUser()){
+                    fillWorkingUserData(); // Relleno los datos del usuario actual
+                }else{
+                    storeWorkingUser(); // Guardo los datos del usuario actual
+                }
                 document.querySelector(".contenedor").style.transform = "translateX(-16.66%)"; // Desplazar a la izquierda
                 document.getElementById("ErrAllData").style.visibility = "hidden";
             }else{
@@ -98,6 +109,7 @@ if (experiment_ids.length > 0) {
             text.textAlign = "right";
             text.textBaseline = "alphabetic";
             stage.addChild(text);
+
             // Desplazar a la segunda página
             document.querySelector(".contenedor").style.transform = "translateX(-33.33%)"; // Desplazar a la izquierda
         });
@@ -182,7 +194,7 @@ if (experiment_ids.length > 0) {
             document.body.removeChild(enlace);
         });
     }else{
-        // fin de los experimentos ---> Pagina final // Error en el encoding de experimentos (i.e. mandó fruta. Silent fail)
+        // Experimento no válido ---> Pagina final // Error en el encoding de experimentos (i.e. mandó fruta. Silent fail)
         console.error("Experimento no válido");
         document.querySelector(".contenedor").style.transform = "translateX(-83.33%)"
     }
