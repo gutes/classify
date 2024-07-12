@@ -183,9 +183,11 @@ if (experiment_ids.length > 0) {
         });
     }else{
         // fin de los experimentos ---> Pagina final // Error en el encoding de experimentos (i.e. mandó fruta. Silent fail)
+        console.error("Experimento no válido");
         document.querySelector(".contenedor").style.transform = "translateX(-83.33%)"
     }
 }else{
     // fin de los experimentos ---> Pagina final
+    console.log("Fin de los experimentos");
     document.querySelector(".contenedor").style.transform = "translateX(-83.33%)"
 }
