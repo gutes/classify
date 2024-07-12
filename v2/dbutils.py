@@ -16,7 +16,16 @@ def get_or_create(session: Session, model : Type[Base], **kwargs):
         session.commit()
     return instance
     
-def save_user_classification(session : Session, user_classification : ClassificationCreate) -> bool:
+def save_user_classification(session : Session, user_classification : ClassificationCreate):
+    print ("====== Salvando experimento")
+    # Create and save experiment
+    experiment = get_or_create(session, Experiment, name=user_classification.experiment_name)
+
+    print ("====== Salvando imagenes de experimento")
+    # Create images associated with experiment (from list of image names as strings)
+    for img in user_classification.images:
+        new_img = get_or_create(session, Image, name=img, experiment=experiment)
+
 
     # Create and save classification details
     classification_details = ClassificationDetails(reasoning=user_classification.reasoning,

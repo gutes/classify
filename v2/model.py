@@ -13,11 +13,13 @@ from sqlalchemy.orm import DeclarativeBase
 # Database model
 class Base(DeclarativeBase):
     pass
-    
+
 class Image(Base):
     __tablename__ = "image"
     id : Mapped[int] = mapped_column(primary_key=True) 
     name : Mapped[str] = mapped_column(String(50))
+    experiment_id : Mapped[int] = mapped_column(ForeignKey("experiment.id"))
+    experiment : Mapped["Experiment"] = relationship(back_populates="images")
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="image")
 
 class Category(Base):
@@ -52,3 +54,10 @@ class ClassificationDetails(Base):
     date: Mapped[datetime] = mapped_column(insert_default=func.now())
     classifications: Mapped[Set["Classification"]] = relationship(back_populates="classification_details")
     timeline: Mapped[str] # JSON string
+
+
+class Experiment(Base):
+    __tablename__ = "experiment"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(String(50))
+    images : Mapped[Set["Image"]]= relationship(back_populates="experiment")

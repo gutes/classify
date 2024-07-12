@@ -15,7 +15,7 @@
         }
 
         .contenedor {
-            width: 500%; /* 5* #pasos */
+            width: 600%; /* 6* #pasos */
             height: 100%;
             display: flex;
             transition: transform 0.5s ease; /* Transición suave */
@@ -62,7 +62,12 @@
             border: 1px solid red;
             font: 14px Arial;
         }
-
+        input[type="range"] {
+            width:40%;
+        }
+        output{
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -70,7 +75,7 @@
         <!-- Paso 1: Ingreso de datos personales -->
         <div class="pagina-container">
             <div class="pagina">
-                <h3>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</h3>
+                <h3>Entre cables y algoritmos - Actividad tema 2 - <span id="experiment_name"></span></h3>
                 <p>Gracias por participar de esta actividad. Antes de empezar, contanos un poco sobre vos:</p>
                 <label for="nombre">Nombre y Apellido:</label>
                 <input type="text" id="nombre" name="nombre"><br/>
@@ -79,7 +84,7 @@
                 <label for="carrera">¿Estudiás? ¿Qué Carrera?</label>
                 <input type="text" id="carrera" name="carrera"><br/>
                 <label for="background">¿Algo mas que nos quieras contar sobre vos?</label>
-                <textarea id="background" name="background"></textarea>
+                <textarea id="background" name="background" rows="4" cols="50"></textarea>
                 <div class="btn-container">
                     <button id="introBtn">Comenzar</button>
                 </div>
@@ -89,15 +94,15 @@
         <!-- Paso 2: Instrucciones de juego -->
         <div class="pagina-container">
             <div class="pagina">
-                <h3>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</h3>
-            <p>En esta actividad tendrán que agrupar a nueve superhéroes. Deberán formar entre 2 y 8 grupos con algún criterio que elijan.
+                <h3>Entre cables y algoritmos - Actividad tema 2 - <span id="experiment_name2"></span></h3>
+            <p>En esta actividad tendrán que agrupar nueve imágenes sobre el tema . Deberán formar entre 2 y 8 grupos con algún criterio que elijan.
                 No puede haber 9 grupos de 1 ni un grupo de 9.
             </p>
             <p>
                 Para esta actividad, no deben buscar información adicional a la que aparece en las imágenes (usen el conocimiento que tienen ahora).
                 Las mismas aparecerán en la pantalla a continuación.
                 Para conformar los grupos, deben arrastrar las imágenes dentro del área que encuentran debajo,
-                poniendo cerca a los personajes que componen cada grupo, y los grupos separados entre sí.
+                poniendo cerca aquellas que componen cada grupo, y los grupos separados entre sí.
             </p>
             <p>Cuando terminen, descarguen la imagen (el botón está más abajo) y
                 compártanla en el foro de la actividad comentando el criterio de conformación de sus grupos.
@@ -125,7 +130,7 @@
             <div class="pagina">
                 <div class="btn-container">
                     <text>Ahora a ponerle nombre a los grupos!</text><br/>
-                    <textarea name="reasoning" id="reasoning"  placeholder="Describí brevemente qué criterio usaste para agruparlos."></textarea>
+                    <textarea name="reasoning" id="reasoning"  placeholder="Describí brevemente qué criterio usaste para agruparlos." rows="4" cols="50"></textarea>
                     <div id="grupos" class="grupos-container"></div>
                     <button id="seguirBtn-2">Seguir</button>
                     <button id="volverCanvasBtn">Volver al ejercicio</button>
@@ -137,11 +142,18 @@
         <div class="pagina-container">
             <div class="pagina">
                 <div class="btn-container">
-                    <text>Ya casi estamos. Contanos, del 1 al 10, cuaánto creés vos que sabés sobre Superhéroes, siendo 1 equivalente a "se muy poco" y 10 "Soy fanátic@, sé vida y obra de Linterna Verde.".</text><br/><br/>
+                    <text>Ya casi estamos. Contanos, del 1 al 10, cuánto creés vos que sabés sobre Superhéroes, siendo 1 equivalente a "se muy poco" y 10 "Soy fanátic@, sé vida y obra de Linterna Verde.".</text><br/><br/>
                     <text>Por ejemplo: Si nunca viste un dibujito animado o leiste un comic, por ahí un 1 o un 2 van bien con tu perfil. Si, en cambio, conoces</text><br/>
-                    <input type="range" class="slider-knowledge" id="knowledge" min="1" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
+                    <input type="range" class="slider-knowledge" width="40%" id="knowledge" min="1" max="10" value="5" oninput="this.nextElementSibling.value = this.value">
                     <output>5</output>
-                    <button id="saveBtn">Guardar y Terminar!</button>
+                    <button id="saveBtn">Guardar!</button>
+                </div>
+            </div>
+        </div>
+        <div class="pagina-container">
+            <div class="pagina">
+                <div class="btn-container">
+                    <text>Gracias por ayudarnos!</text>
                 </div>
             </div>
         </div>

@@ -1,3 +1,7 @@
+function shuffleArray(a){
+    return a.sort(() => Math.random() - 0.5);
+}
+
 function selectColor(number) {
     const hue = number * 137.508; // use golden angle approximation
     return `hsl(${hue},100%,50%)`;
@@ -40,10 +44,8 @@ function updateShadows(){
 function cargarImagenes() {
     for (let i = 0; i < imagenes.length; i++) {
         let imagen = new Image();
-        imagen.src = imagenes[i];
+        imagen.src = "img/"+ imagenes[i];
         imagen.id = imagenes[i]; // Este id va a la DB - filename 
-
-
         imagen.index = i;
         imagen.onload = handleImageLoad;
     }
@@ -115,7 +117,7 @@ function saveStageState(){
     let current_state = [];
 
     for (let key in current_on_stage){
-        current_state.push({'name' : current_on_stage[key].image.id.split("/")[1], 
+        current_state.push({'name' : current_on_stage[key].image.id, 
                             'x'  : current_on_stage[key].x, 
                             'y'  : current_on_stage[key].y});
     };
@@ -149,12 +151,12 @@ function nameGroups(){
         
             group.forEach(elem => {
                 let imagen = new Image();
-                imagen.src = current_elems[elem].id;
+                imagen.src = "img/" + current_elems[elem].id;
                 imagen.style.display = "inline";
                 imagen.style.margin = "5px";
                 imagen.style.height = "150px";
                 groupDiv.appendChild(imagen);
-                current_groups[`grupo${i}`].images.push({ name : current_elems[elem].id.split("/")[1]});
+                current_groups[`grupo${i}`].images.push({ name : current_elems[elem].id});
             });
 
             // Agregar input para el nombre
@@ -265,24 +267,19 @@ function saveResults() {
         current_groups_list.push({  "group_name" : gname, "images": current_groups[`grupo${i}`].images})
         i++;
     };
-    
-    reasoning = document.getElementById("reasoning").value;
-    user_name = document.getElementById("nombre").value;
-    age = document.getElementById("edad").value;
-    career = document.getElementById("carrera").value;
-    background = document.getElementById("background").value;
-    knowledge = document.getElementById("knowledge").value;
-    timeline = JSON.stringify(localStorage.getItem("timeline")); 
 
+    console.log(imagenes);
     const data = {
-        "user_name" : user_name,
-        "age" : age,
-        "career" : career,
-        "background" : background,
-        "knowledge" : knowledge,
-        "reasoning": reasoning,
+        "user_name" : document.getElementById("nombre").value,
+        "age" : document.getElementById("edad").value,
+        "career" : document.getElementById("carrera").value,
+        "background" : document.getElementById("background").value,
+        "knowledge" : document.getElementById("knowledge").value,
+        "reasoning": document.getElementById("reasoning").value,
         "current_groups": current_groups_list,
-        "timeline" : timeline
+        "timeline" : JSON.stringify(localStorage.getItem("timeline")),
+        "experiment_name" : experiment_name,
+        "images" : imagenes
     };
 
     fetch('/save', {
