@@ -18,10 +18,8 @@ source bin/activate
 Once the virtual environment is activated you can use `pip3` to install the dependencies:
 
 ```bash
-pip3 install fastapi python-multipart annotated-types pydantic
+pip3 install -r requirements.txt
 ```
-TODO: Missing: sqlalchemy
-
 
 Once all the dependencies have been installed you can run the fastapi application locally:
 
