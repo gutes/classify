@@ -67,11 +67,6 @@ if (experiment_ids.length > 0) {
         // Llamar a la función para cargar las imágenes
         cargarImagenes();
         updateText();
-
-        // Actualizar el escenario en cada "tick"
-        createjs.Ticker.addEventListener("tick", function () {
-            stage.update();
-        });
         
         // Si el usuario ya esta haciendo experimentos entonces relleno sus datos
         if (isAWorkingUser()){
@@ -80,6 +75,11 @@ if (experiment_ids.length > 0) {
                 deleteWorkingUser(); // Ultimo experimento, borro el current_user
             }
         }
+        
+        // Actualizar el escenario en cada "tick"
+        createjs.Ticker.addEventListener("tick", function () {
+            stage.update();
+        });
         
         /* Event handlers para los botones */
         // Botón Comenzar
