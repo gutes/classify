@@ -272,6 +272,10 @@ function storeWorkingUser(){
         localStorage.setItem("current_user", JSON.stringify(user));
 }
 
+function deleteWorkingUser(){
+    localStorage.removeItem("current_user"); // borrar current_user si es el último experimento
+}
+
 function fillWorkingUserData(){
     let user = JSON.parse(localStorage.getItem("current_user"));
 
@@ -294,7 +298,6 @@ function saveResults() {
         i++;
     };
 
-    console.log(imagenes);
     const data = {
         "user_name" : document.getElementById("nombre").value,
         "age" : document.getElementById("edad").value,
@@ -322,5 +325,6 @@ function saveResults() {
             console.error('Error saving results:', error);
             alert('Error guardando datos.');
         });
+    
 }
 

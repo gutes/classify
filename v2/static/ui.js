@@ -75,8 +75,10 @@ if (experiment_ids.length > 0) {
         
         // Si el usuario ya esta haciendo experimentos entonces relleno sus datos
         if (isAWorkingUser()){
-            // Relleno los datos del usuario actual
-            fillWorkingUserData();
+            fillWorkingUserData(); // Relleno los datos del usuario actual
+            if (experiment_ids.length == 0){
+                deleteWorkingUser(); // Ultimo experimento, borro el current_user
+            }
         }
         
         /* Event handlers para los botones */
@@ -84,11 +86,10 @@ if (experiment_ids.length > 0) {
         document.getElementById("introBtn").addEventListener("click", function () {
             // Validar que haya ingresado sus datos personales
             if (validatePersonalData()){
-                if (isAWorkingUser()){
-                    fillWorkingUserData(); // Relleno los datos del usuario actual
-                }else{
+                if (!isAWorkingUser() && (experiment_ids.length > 0) ){
                     storeWorkingUser(); // Guardo los datos del usuario actual
                 }
+
                 document.querySelector(".contenedor").style.transform = "translateX(-16.66%)"; // Desplazar a la izquierda
                 document.getElementById("ErrAllData").style.visibility = "hidden";
             }else{
@@ -201,5 +202,6 @@ if (experiment_ids.length > 0) {
 }else{
     // fin de los experimentos ---> Pagina final
     console.log("Fin de los experimentos");
+    deleteWorkingUser(); // Ultimo experimento, borro el current_user
     document.querySelector(".contenedor").style.transform = "translateX(-83.33%)"
 }
