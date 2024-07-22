@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entre cables y algoritmos - Actividad tema 2 - Superhéroes</title>
+    <title>Clasificando Cosas!</title>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
     <style>
         body, html {
@@ -68,6 +68,9 @@
         output{
             display: block;
         }
+       .experiment{
+            color: red;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +78,7 @@
         <!-- Paso 1: Ingreso de datos personales -->
         <div class="pagina-container">
             <div class="pagina">
-                <h3>Entre cables y algoritmos - Actividad tema 2 - <span id="experiment_name"></span></h3>
+                <h3>Clasificando Cosas! - <span id="experiment_name" class="experiment"></span></h3>
                 <p>Gracias por participar de esta actividad. Antes de empezar, contanos un poco sobre vos:</p>
                 <label for="nombre">Nombre y Apellido:</label>
                 <input type="text" id="nombre" name="nombre"><br/>
@@ -94,7 +97,7 @@
         <!-- Paso 2: Instrucciones de juego -->
         <div class="pagina-container">
             <div class="pagina">
-                <h3>Entre cables y algoritmos - Actividad tema 2 - <span id="experiment_name2"></span></h3>
+                <h3>Clasificando Cosas! - <span id="experiment_name2" class="experiment"></span></h3>
             <p>En esta actividad tendrán que agrupar nueve imágenes sobre el tema . Deberán formar entre 2 y 8 grupos con algún criterio que elijan.
                 No puede haber 9 grupos de 1 ni un grupo de 9.
             </p>
