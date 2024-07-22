@@ -17,17 +17,15 @@ def get_or_create(session: Session, model : Type[Base], **kwargs):
     return instance
     
 def save_user_classification(session : Session, user_classification : ClassificationCreate):
-    print ("====== Salvando experimento")
     # Create and save experiment
     experiment = get_or_create(session, Experiment, name=user_classification.experiment_name)
 
-    print ("====== Salvando imagenes de experimento")
     # Create images associated with experiment (from list of image names as strings)
     for img in user_classification.images:
         new_img = get_or_create(session, Image, name=img, experiment=experiment)
 
 
-    # Create and save classification details
+    # Create and save classification details, timeline is a stringified JSON
     classification_details = ClassificationDetails(reasoning=user_classification.reasoning,
                                                    name=user_classification.user_name,
                                                    career=user_classification.career,
@@ -41,7 +39,6 @@ def save_user_classification(session : Session, user_classification : Classifica
     session.refresh(classification_details)
 
     # Save how images were classified
-    print(user_classification)
     for group in user_classification.current_groups:
         image_category = get_or_create(session, Category, name=group.group_name)
         for img in group.images:
