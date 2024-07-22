@@ -306,7 +306,7 @@ function saveResults() {
         "knowledge" : document.getElementById("knowledge").value,
         "reasoning": document.getElementById("reasoning").value,
         "current_groups": current_groups_list,
-        "timeline" : JSON.stringify(localStorage.getItem("timeline")),
+        "timeline" : localStorage.getItem("timeline"),
         "experiment_name" : experiment_name,
         "images" : imagenes
     };

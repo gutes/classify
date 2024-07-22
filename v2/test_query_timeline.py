@@ -29,6 +29,6 @@ Base.metadata.create_all(bind=engine)
 result = next(get_db()).execute(select(ClassificationDetails))
 
 for classification_detail in result.scalars():
-    jsonified = json.loads(json.loads(json.loads(classification_detail.timeline))) # TODO: fix triple-escaped. 
+    jsonified = json.loads(json.loads(classification_detail.timeline)) # TODO: fix double-escaped. 
     for frame in jsonified:
         print (f"{frame['timestamp'] }")
