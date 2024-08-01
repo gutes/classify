@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from fastapi import FastAPI, APIRouter, Depends
 from fastapi.staticfiles import StaticFiles
 
@@ -9,6 +10,7 @@ from sqlalchemy.orm import sessionmaker
 from api_model  import ClassificationCreate 
 from model import *
 from dbutils import *
+
 
 # Database setup
 DATABASE_URL = "sqlite:///./test.db"
@@ -29,6 +31,11 @@ Base.metadata.create_all(bind=engine)
 result = next(get_db()).execute(select(ClassificationDetails))
 
 for classification_detail in result.scalars():
+    print ("----------------------------------------")
+    print ("Classification by: " + classification_detail.name)
+    print ("Start timestamp: " + classification_detail.date.strftime("%d/%m/%Y"))
     jsonified = json.loads(json.loads(classification_detail.timeline)) # TODO: fix double-escaped. 
     for frame in jsonified:
-        print (f"{frame['timestamp'] }")
+        print (datetime.fromtimestamp(frame['timestamp']).strftime("%d/%m/%Y, %H:%M:%S"))
+        for img in frame["stage_state"]:
+            print (f"{img["name"]} at ({round(img["x"], None)},{img["y"]})")
