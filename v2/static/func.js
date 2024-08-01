@@ -68,7 +68,7 @@ function handleImageLoad(event) {
     bitmap.group = image.index;
 
     // Ajustar el tamaño de la imagen a 80x80 píxeles
-    bitmap.scaleX = bitmap.scaleY = 120 / bitmap.getBounds().width;
+    bitmap.scaleX = bitmap.scaleY = 100 / bitmap.getBounds().width;
 
     // Ajustar el punto de registro al centro de la imagen
     bitmap.regX = bitmap.getBounds().width / 2;

@@ -38,7 +38,7 @@ try {
 }
 
 
-var experiments = { '1' : { "exp_name" : "Superheroes",
+var experiments = { '1' : { "exp_name" : "Superhéroes",
                             "exp_images": [ "s01-t.png", "s02-t.png", "s03-t.png", "s04-t.png", "s05-t.png", "s06-t.png", "s07-t.png", "s08-t.png", "s09-t.png"]
                         },
                     '2' : { "exp_name": "Tabla Periódica",
@@ -75,7 +75,7 @@ if (experiment_ids.length > 0) {
                 deleteWorkingUser(); // Ultimo experimento, borro el current_user
             }
         }
-        
+
         // Actualizar el escenario en cada "tick"
         createjs.Ticker.addEventListener("tick", function () {
             stage.update();
